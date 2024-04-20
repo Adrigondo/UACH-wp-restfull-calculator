@@ -2,22 +2,54 @@ extends layout
 
 block scripts
     script(type='text/javascript').
-        function updateMethod() {var value = document.querySelector('input[name="operation"]:checked').value;document.getElementById('form').setAttribute('method', value);console.log(value)};
+        document.addEventListener("submit", ($event)=>onsubmit(event));
+        onsubmit = (event) => {
+            event.preventDefault();
+            var method = document.querySelector('input[name="operation"]:checked')?.value;
+            //- console.log(method);
+            if(!method) return;
+            var url = event.target.getAttribute( "action" );
+            var formData = Object.fromEntries(new FormData(event.target));
+
+            let config = {
+                method: method,
+                mode: "cors",
+                cache: "default",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': '*/*',
+                },
+            };
+            let params='/':
+            if(["GET", "DELETE"].includes(method)){
+                //- config["params"]=formData;
+                params=`/${formData.n1}/${formData.n2}`
+            }else{
+                config["body"]=JSON.stringify(formData);
+            }
+            console.log(config);
+            const result=new Promise(async (resolve, reject)=>{
+                resolve(await fetch('/redirect'+params, config));
+            });
+            result.then((data)=>{
+                console.log(data);
+            })
+        };
 
 block content 
-    form(action="/redirect/" method="GET" id="form") 
+    form(id="form",) 
         label(for="sum") n1
         input(type="number", placeholder='0' name="n1")
         label(for="sum") n2
         input(type="number", placeholder='0' name="n2")
-        input(type="radio", name="operation", id="sum", value="GET", onchange="updateMethod()")
+        input(type="radio", name="operation", id="sum", value="GET",)
         label(for="sum") sum
-        input(type="radio", name="operation", id="multiply", value="POST", onchange="updateMethod()")
+        input(type="radio", name="operation", id="multiply", value="POST",)
         label(for="multiply") multiply
-        input(type="radio", name="operation", id="divide", value="PUT", onchange="updateMethod()")
+        input(type="radio", name="operation", id="divide", value="PUT",)
         label(for="divide") divide
-        input(type="radio", name="operation", id="power", value="PATCH", onchange="updateMethod()")
+        input(type="radio", name="operation", id="power", value="PATCH",)
         label(for="power") power
-        input(type="radio", name="operation", id="substract", value="DELETE", onchange="updateMethod()")
+        input(type="radio", name="operation", id="substract", value="DELETE",)
         label(for="substract") substract
         button(type="submit") Calculate

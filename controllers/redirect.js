@@ -9,8 +9,8 @@ const myRedirect = (req, res, next) => {
         ...req.params,
         ...req.query,
     };
-    const { n1, n2 } = data;
-    // console.log("DEV -> ", req.method, req.query);
+    const { n1, n2, operation } = data;
+    console.log("DEV -> ", n1,n2,operation, method);
     switch (method) {
         case 'GET':
             res.redirect(`/results/${n1}/${n2}`);
@@ -19,17 +19,17 @@ const myRedirect = (req, res, next) => {
             res.redirect(`/results/`,307);
             break;
         case 'PUT':
-            console.log(operation,data);
             res.redirect(`/results/`,307);
             break;
         case 'PATCH':
+            console.log("DEV->",operation,data);
             res.redirect(`/results/`,307);
             break;
         case 'DELETE':
             res.redirect(`/results/${n1}/${n2}`);
             break;
         default:
-            res.send("error");
+            res.status(404).send({error:"A"});
             break;
     }
 }
