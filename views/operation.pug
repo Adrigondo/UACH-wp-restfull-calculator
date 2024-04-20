@@ -1,0 +1,23 @@
+extends layout
+
+block scripts
+    script(type='text/javascript').
+        function updateMethod() {var value = document.querySelector('input[name="operation"]:checked').value;document.getElementById('form').setAttribute('method', value);console.log(value)};
+
+block content 
+    form(action="/redirect/" method="GET" id="form") 
+        label(for="sum") n1
+        input(type="number", placeholder='0' name="n1")
+        label(for="sum") n2
+        input(type="number", placeholder='0' name="n2")
+        input(type="radio", name="operation", id="sum", value="GET", onchange="updateMethod()")
+        label(for="sum") sum
+        input(type="radio", name="operation", id="multiply", value="POST", onchange="updateMethod()")
+        label(for="multiply") multiply
+        input(type="radio", name="operation", id="divide", value="PUT", onchange="updateMethod()")
+        label(for="divide") divide
+        input(type="radio", name="operation", id="power", value="PATCH", onchange="updateMethod()")
+        label(for="power") power
+        input(type="radio", name="operation", id="substract", value="DELETE", onchange="updateMethod()")
+        label(for="substract") substract
+        button(type="submit") Calculate

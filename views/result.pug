@@ -1,0 +1,13 @@
+extends layout
+
+block content 
+    h3
+        span #{n1}
+        case operation
+            when 'sum': span +
+            when 'multiply': span ｘ
+            when 'divide': span ÷
+            when 'power': span ^
+            when 'substract': span -
+
+        span #{n2} = #{result}
