@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  table 
+    thead  
+      tr
+        td HTTP Protocoll 
+        td Path 
+        td Description
+    tbody
+      tr 
+        td GET
+        td /results/:n1/:n2
+        td Sum n1 + n2
+      tr
+        td POST
+        td /results/
+        td Multiply n1 * n2
+      tr
+        td PUT
+        td /results/
+        td Divide n1 / n2
+      tr
+        td PATCH
+        td /results/
+        td Power n1 ^ n2
+      tr
+        td DELETE
+        td /results/:n1/:n2
+        td Rest n1 - n2
