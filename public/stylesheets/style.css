@@ -10,3 +10,10 @@ a {
 tr{
   border-bottom: 1px;
 }
+
+#code:not(:empty){
+  background-color: black;
+  color: white;
+  padding:12px;
+  border-radius: 4px;
+}

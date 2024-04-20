@@ -2,7 +2,7 @@ extends layout
 
 block scripts
     script(type='text/javascript').
-        document.addEventListener("submit", ($event)=>onsubmit(event));
+        //- document.addEventListener("submit", ($event)=>onsubmit(event));
         onsubmit = (event) => {
             event.preventDefault();
             var method = document.querySelector('input[name="operation"]:checked')?.value;
@@ -17,23 +17,31 @@ block scripts
                 cache: "default",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': '*/*',
+                    'Accept': 'aplication/json',
                 },
+                redirect:"follow"
             };
-            let params='/':
+            let query='/';
             if(["GET", "DELETE"].includes(method)){
-                //- config["params"]=formData;
-                params=`/${formData.n1}/${formData.n2}`
+                config["query"]=formData;
+                query=`/?n1=${formData.n1}&n2=${formData.n2}&operation=${formData.operation}`
             }else{
                 config["body"]=JSON.stringify(formData);
             }
             console.log(config);
             const result=new Promise(async (resolve, reject)=>{
-                resolve(await fetch('/redirect'+params, config));
+                resolve(await fetch('/redirect'+query, config));
             });
-            result.then((data)=>{
-                console.log(data);
+            result.then((response)=>{
+                return response.text();
             })
+            .then((content)=>{
+                console.log(content);
+                var codeNode = document.querySelector('#code');
+                var renderNode = document.querySelector('#render');
+                codeNode.innerText=content;
+                renderNode.innerHTML=content;
+            });
         };
 
 block content 
@@ -53,3 +61,9 @@ block content
         input(type="radio", name="operation", id="substract", value="DELETE",)
         label(for="substract") substract
         button(type="submit") Calculate
+
+    div
+        h3 Endpoint code:
+        p(id="code")
+        h3 Endpoint render:
+        p(id="render")
